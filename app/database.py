@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from sqlalchemy import inspect, text
 from sqlmodel import SQLModel, Session, create_engine
 
 
@@ -12,6 +13,15 @@ engine = create_engine(
 
 def create_db_and_tables() -> None:
     SQLModel.metadata.create_all(engine)
+    columns = {column["name"] for column in inspect(engine).get_columns("sugestaolivro")}
+    if "status_sugestao" not in columns:
+        with engine.begin() as connection:
+            connection.execute(
+                text(
+                    "ALTER TABLE sugestaolivro "
+                    "ADD COLUMN status_sugestao VARCHAR NOT NULL DEFAULT 'Pendente'"
+                )
+            )
 
 
 def get_session():
