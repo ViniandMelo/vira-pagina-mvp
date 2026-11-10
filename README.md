@@ -24,7 +24,7 @@ Sistema de gestão e localização física de livros desenvolvido para otimizar 
 ## 🚀 Como Executar o Projeto
 ```bash
 # Clonar o repositório
-git clone [https://github.com/SEU_USUARIO/vira-pagina-mvp.git](https://github.com/SEU_USUARIO/vira-pagina-mvp.git)
+git clone https://github.com/ViniandMelo/vira-pagina-mvp.git
 
 # Entrar no diretório
 cd vira-pagina-mvp
