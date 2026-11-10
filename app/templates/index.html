@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Consulte o acervo e encontre a localização dos livros do Sebo Vira Página.">
+  <title>Acervo | Sebo Vira Página</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #242d27;
+      background: #f5f4ef;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      --green-900: #173c2c;
+      --green-700: #2e694b;
+      --green-100: #e7f0e9;
+      --paper: #fffefa;
+      --muted: #59645d;
+      --line: #e3e5de;
+      --focus-on-dark: #f2d69f;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.5; }
+    button, input, textarea { font: inherit; }
+    a { color: inherit; }
+    :where(a, button, input, textarea, select):focus-visible {
+      outline: 3px solid var(--green-900);
+      outline-offset: 3px;
+    }
+    .brand:focus-visible, .docs-link:focus-visible {
+      outline-color: var(--focus-on-dark);
+    }
+    .skip-link {
+      position: absolute;
+      z-index: 1;
+      top: .5rem;
+      left: .5rem;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      padding: .5rem .85rem;
+      border-radius: .5rem;
+      background: white;
+      color: var(--green-900);
+      transform: translateY(-160%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .topbar {
+      background: var(--green-900);
+      color: #fffefa;
+    }
+    .topbar-inner, main {
+      width: min(100% - 2rem, 1120px);
+      margin-inline: auto;
+    }
+    .topbar-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      min-height: 44px;
+      color: inherit;
+      text-decoration: none;
+    }
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: var(--green-900);
+      background: #f2d69f;
+    }
+    .brand-name { display: block; font-size: 1rem; font-weight: 750; letter-spacing: .01em; }
+    .brand-caption { display: block; margin-top: .12rem; color: #d8e4da; font-size: .875rem; }
+    .docs-link {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .6rem .9rem;
+      border: 1px solid #91aa98;
+      border-radius: .65rem;
+      color: white;
+      font-size: .95rem;
+      font-weight: 650;
+      text-decoration: none;
+    }
+    .docs-link:hover { background: #ffffff1a; }
+    main { padding-block: 2.5rem 4rem; }
+    .welcome {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    .eyebrow {
+      margin: 0 0 .45rem;
+      color: var(--green-700);
+      font-size: .875rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1 { margin: 0; color: var(--green-900); font-size: clamp(1.8rem, 4vw, 2.5rem); letter-spacing: -.04em; }
+    .welcome-copy { max-width: 620px; margin: .55rem 0 0; color: var(--muted); line-height: 1.6; }
+    .welcome-art { position: relative; flex: 0 1 360px; min-width: 0; }
+    .welcome-image {
+      display: block;
+      width: 100%;
+      height: 210px;
+      border-radius: .9rem;
+      object-fit: cover;
+      object-position: center 54%;
+    }
+    .counter {
+      position: absolute;
+      right: .75rem;
+      bottom: .75rem;
+      min-width: 126px;
+      padding: .85rem 1rem;
+      border: 1px solid #d5e0d6;
+      border-radius: .85rem;
+      background: #fffefa;
+      text-align: center;
+      box-shadow: 0 4px 14px #17291d30;
+    }
+    .counter strong { display: block; color: var(--green-900); font-size: 1.45rem; line-height: 1.2; }
+    .counter span { color: #43584a; font-size: .875rem; }
+    .panel {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: var(--paper);
+      box-shadow: 0 8px 24px #26392d0a;
+    }
+    .panel-heading {
+      padding: 1.4rem 1.5rem 1.1rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .panel-heading h2 { margin: 0; color: var(--green-900); font-size: 1.15rem; }
+    .panel-heading p { margin: .35rem 0 0; color: var(--muted); font-size: .95rem; }
+    .panel + .panel { margin-top: 1.25rem; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      padding: 1.25rem 1.5rem 1rem;
+    }
+    .field { display: flex; flex-direction: column; gap: .4rem; }
+    .field-wide { grid-column: 1 / -1; }
+    .field label { color: #303c34; font-size: .95rem; font-weight: 700; }
+    .field input, .field textarea {
+      width: 100%;
+      min-height: 48px;
+      padding: .7rem .8rem;
+      border: 1px solid #65756a;
+      border-radius: .65rem;
+      background: white;
+      color: #202a23;
+    }
+    .field textarea { min-height: 112px; resize: vertical; }
+    .field-hint { margin: 0; color: var(--muted); font-size: .875rem; }
+    .form-actions { padding: 0 1.5rem 1.25rem; }
+    .primary-button, .sale-button {
+      min-height: 48px;
+      padding: .7rem 1rem;
+      border: 2px solid var(--green-900);
+      border-radius: .65rem;
+      background: var(--green-900);
+      color: white;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .primary-button:hover, .sale-button:hover { background: #24543b; }
+    .primary-button:disabled, .sale-button:disabled { cursor: wait; opacity: .75; }
+    .form-feedback {
+      min-height: 1.5rem;
+      margin: .75rem 1.5rem 0;
+      color: var(--green-900);
+      font-weight: 650;
+    }
+    .form-feedback:empty { display: none; }
+    .form-feedback.error { color: #823a2b; }
+    .search-area { padding: 1.25rem 1.5rem .75rem; }
+    .search-label { display: block; margin-bottom: .5rem; color: #303c34; font-size: .95rem; font-weight: 700; }
+    .search-row { display: flex; gap: .65rem; }
+    .search-control { position: relative; flex: 1; }
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: .95rem;
+      color: #58675d;
+      pointer-events: none;
+      transform: translateY(-50%);
+    }
+    .search-input {
+      width: 100%;
+      min-height: 52px;
+      padding: .75rem 1rem .75rem 2.8rem;
+      border: 1px solid #65756a;
+      border-radius: .7rem;
+      background: white;
+      color: #202a23;
+    }
+    .search-input::placeholder { color: #626d65; opacity: 1; }
+    .search-input:focus { border-color: var(--green-700); }
+    .clear-button {
+      min-width: 88px;
+      min-height: 52px;
+      padding: .6rem 1rem;
+      border: 1px solid #86968a;
+      border-radius: .7rem;
+      background: white;
+      color: var(--green-900);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .clear-button:hover { background: #f0f4f0; }
+    .clear-button[hidden] { display: none; }
+    .results-line {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+      padding-inline: 1.5rem;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    .books {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+      gap: 1rem;
+      margin: 0;
+      padding: .35rem 1.5rem 1.5rem;
+      list-style: none;
+    }
+    .book-card {
+      min-height: 208px;
+      display: flex;
+      flex-direction: column;
+      padding: 1.15rem;
+      border: 1px solid var(--line);
+      border-radius: .8rem;
+      background: white;
+    }
+    .book-topline { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+    .book-category {
+      color: #69746c;
+      font-size: .875rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .availability {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: .25rem .55rem;
+      border-radius: 999px;
+      font-size: .875rem;
+      font-weight: 750;
+    }
+    .available { background: #e5f3e8; color: #205c34; }
+    .unavailable { background: #f8e9e5; color: #823a2b; }
+    .book-card h3 {
+      margin: 1rem 0 .35rem;
+      color: #202a23;
+      font-size: 1.08rem;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+    .author { margin: 0; color: var(--muted); font-size: .92rem; }
+    .book-meta {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: .75rem;
+      margin-top: auto;
+      padding-top: 1rem;
+    }
+    .price-label, .location-label { display: block; margin-bottom: .2rem; color: #647068; font-size: .875rem; }
+    .book-meta dt, .book-meta dd { margin: 0; }
+    .price { color: var(--green-900); font-size: 1.04rem; font-weight: 800; }
+    .location { color: #34493b; font-size: .9rem; font-weight: 700; text-align: right; }
+    .sale-actions { margin-top: 1rem; }
+    .sale-button { width: 100%; }
+    .book-card.sold { background: #f3f4f1; }
+    .community-layout {
+      display: grid;
+      grid-template-columns: minmax(210px, .75fr) minmax(0, 1.25fr);
+      align-items: stretch;
+      gap: 1.25rem;
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+    .community-photo { min-width: 0; margin: 0; }
+    .community-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      max-height: 440px;
+      border-radius: .8rem;
+      object-fit: cover;
+      object-position: center 35%;
+    }
+    .community-photo figcaption { margin-top: .5rem; color: var(--muted); font-size: .875rem; }
+    .community-layout .form-grid { grid-template-columns: 1fr; padding: 0 0 1rem; }
+    .community-layout .field-wide { grid-column: auto; }
+    .community-layout .form-actions { padding: 0; }
+    .community-layout .form-feedback { margin-inline: 0; }
+    .suggestions { display: grid; gap: .85rem; margin: 0; padding: 1.25rem 1.5rem 1.5rem; list-style: none; }
+    .suggestion-card { padding: 1rem; border: 1px solid var(--line); border-radius: .8rem; background: white; }
+    .suggestion-card h3 { margin: .55rem 0 .2rem; color: var(--green-900); font-size: 1.05rem; }
+    .suggestion-card p { margin: .35rem 0; color: var(--muted); }
+    .suggestion-status { color: var(--green-900) !important; font-weight: 750; }
+    .suggestion-status.added { color: #205c34 !important; }
+    .suggestion-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: .85rem; }
+    .suggestion-actions button, .suggestion-catalog-form button {
+      min-height: 48px;
+      padding: .65rem .9rem;
+      border: 2px solid var(--green-900);
+      border-radius: .65rem;
+      background: var(--green-900);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .suggestion-actions .secondary-action {
+      background: #fff;
+      color: var(--green-900);
+    }
+    .suggestion-actions button:hover, .suggestion-catalog-form button:hover { background: #24543b; color: white; }
+    .suggestion-actions button:disabled, .suggestion-catalog-form button:disabled { cursor: wait; opacity: .75; }
+    .suggestion-catalog-form { margin-top: .85rem; padding: 1rem; border-radius: .7rem; background: #f5f7f3; }
+    .suggestion-catalog-form[hidden] { display: none; }
+    .suggestion-catalog-form .form-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 0 0 1rem; }
+    .suggestion-catalog-form .field label { font-size: .9rem; }
+    .suggestion-empty { padding: 1.5rem; border: 1px dashed #b7c2b9; border-radius: .8rem; color: var(--muted); text-align: center; }
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 2.25rem 1rem;
+      border: 1px dashed #b7c2b9;
+      border-radius: .8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    .empty-state strong { display: block; margin-bottom: .35rem; color: var(--green-900); font-size: 1rem; }
+    .footer-note { margin: 1.25rem 0 0; color: #647068; font-size: .875rem; text-align: center; }
+
+    @media (max-width: 620px) {
+      .topbar-inner, main { width: min(100% - 1.25rem, 1120px); }
+      .topbar-inner { min-height: 68px; }
+      main { padding-top: 1.65rem; }
+      .welcome { align-items: start; flex-direction: column; }
+      .welcome-art { width: 100%; flex-basis: auto; }
+      .welcome-image { height: 190px; }
+      .counter { display: flex; align-items: baseline; gap: .45rem; padding: .6rem .8rem; }
+      .counter strong { font-size: 1.15rem; }
+      .panel-heading { padding: 1.15rem 1rem .95rem; }
+      .form-grid { grid-template-columns: 1fr; padding: 1rem 1rem .75rem; }
+      .field-wide { grid-column: auto; }
+      .form-actions { padding: 0 1rem 1rem; }
+      .form-feedback { margin-inline: 1rem; }
+      .community-layout { grid-template-columns: 1fr; padding: 1rem; }
+      .community-photo img { min-height: 190px; max-height: 260px; }
+      .community-layout .form-grid { padding: 0 0 .75rem; }
+      .community-layout .form-feedback { margin-inline: 0; }
+      .suggestions { padding: 1rem; }
+      .suggestion-catalog-form .form-grid { grid-template-columns: 1fr; padding-bottom: .75rem; }
+      .search-area { padding: 1rem 1rem .5rem; }
+      .results-line { padding-inline: 1rem; }
+      .books { grid-template-columns: 1fr; padding: .35rem 1rem 1rem; }
+    }
+    @media (max-width: 390px) {
+      .brand-caption { display: none; }
+      .topbar-inner { gap: .5rem; }
+      .docs-link {
+        flex: 0 1 44%;
+        padding-inline: .5rem;
+        font-size: .875rem;
+        line-height: 1.25;
+        text-align: center;
+      }
+      .search-row { align-items: stretch; flex-direction: column; }
+      .clear-button { width: 100%; }
+      .book-meta { align-items: start; flex-direction: column; }
+      .location { text-align: left; }
+      .suggestion-actions { flex-direction: column; }
+      .suggestion-actions button, .suggestion-catalog-form button { width: 100%; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .book-card { transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
+      .book-card:hover { border-color: #bdcdbf; box-shadow: 0 8px 20px #26392d10; transform: translateY(-2px); }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="Sebo Vira Página, página inicial">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M3.5 5.75A2.25 2.25 0 0 1 5.75 3.5H11v15H5.75A2.25 2.25 0 0 0 3.5 20.75v-15Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M20.5 5.75a2.25 2.25 0 0 0-2.25-2.25H13v15h5.25a2.25 2.25 0 0 1 2.25 2.25v-15Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M7 7h1.5M7 10h1.5m8-3H18m-1.5 3H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>
+          <span class="brand-name">Vira Página</span>
+          <span class="brand-caption">Sebo comunitário</span>
+        </span>
+      </a>
+      <a class="docs-link" href="/docs">Documentação da API</a>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="welcome" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Painel de atendimento</p>
+        <h1 id="page-title">Acervo de livros</h1>
+        <p class="welcome-copy">Encontre rapidamente um título, confira a disponibilidade e veja onde ele está no sebo.</p>
+      </div>
+      <div class="welcome-art">
+        <img class="welcome-image" src="/static/image.png" alt="Estantes de madeira cheias de livros no Sebo Vira Página">
+        <div class="counter" role="group" aria-labelledby="book-count book-count-label">
+          <strong id="book-count">{{ livros|length }}</strong>
+          <span id="book-count-label">livro(s) no acervo</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="cadastro-title">
+      <div class="panel-heading">
+        <h2 id="cadastro-title">Cadastrar exemplar</h2>
+        <p>Adicione um livro ao acervo e informe onde a equipe pode encontrá-lo.</p>
+      </div>
+      <form id="form-livro">
+        <div class="form-grid">
+          <div class="field">
+            <label for="livro-titulo">Título</label>
+            <input id="livro-titulo" name="titulo" type="text" maxlength="200" required
+                   autocomplete="off" placeholder="Ex.: O Pequeno Príncipe"
+                   aria-describedby="livro-titulo-ajuda">
+            <p class="field-hint" id="livro-titulo-ajuda">Informe o título do exemplar.</p>
+          </div>
+          <div class="field">
+            <label for="livro-autor">Autor</label>
+            <input id="livro-autor" name="autor" type="text" maxlength="200" required
+                   autocomplete="off" placeholder="Ex.: Antoine de Saint-Exupéry">
+          </div>
+          <div class="field">
+            <label for="livro-preco">Preço (R$)</label>
+            <input id="livro-preco" name="preco" type="number" min="0" step="0.01" required
+                   inputmode="decimal" placeholder="Ex.: 25,90">
+          </div>
+          <div class="field">
+            <label for="livro-corredor">Corredor</label>
+            <input id="livro-corredor" name="corredor" type="text" maxlength="50" required
+                   placeholder="Ex.: A">
+          </div>
+          <div class="field">
+            <label for="livro-prateleira">Prateleira</label>
+            <input id="livro-prateleira" name="prateleira" type="text" maxlength="50" required
+                   placeholder="Ex.: 2">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="primary-button" type="submit">Cadastrar livro</button>
+        </div>
+        <p id="livro-feedback" class="form-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="catalog-title">
+      <div class="panel-heading">
+        <h2 id="catalog-title">Consulta do acervo</h2>
+        <p id="busca-ajuda">Digite parte do título ou do nome do autor.</p>
+      </div>
+      <div class="search-area">
+        <label class="search-label" for="busca">Buscar livro</label>
+        <div class="search-row">
+          <div class="search-control">
+            <svg class="search-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
+              <path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <input id="busca" class="search-input" type="search" autocomplete="off"
+                   placeholder="Ex.: O Pequeno Príncipe ou Antoine de Saint-Exupéry"
+                   aria-describedby="busca-ajuda"
+                   aria-controls="lista-livros">
+          </div>
+          <button id="limpar-busca" class="clear-button" type="button"
+                  aria-label="Limpar texto da busca" hidden>Limpar busca</button>
+        </div>
+      </div>
+      <div class="results-line">
+        <p id="status-busca" role="status" aria-live="polite" aria-atomic="true">{{ livros|length }} livro(s) no acervo.</p>
+      </div>
+      <ul id="lista-livros" class="books" aria-label="Livros do acervo" aria-busy="false">
+        {% for livro in livros %}
+        <li class="book-card {{ 'sold' if livro.status_disponibilidade == 'Vendido' else '' }}">
+          <div class="book-topline">
+            <span class="book-category">Livro</span>
+            <span class="availability {{ 'available' if livro.status_disponibilidade|lower == 'disponível' else 'unavailable' }}">
+              {{ livro.status_disponibilidade }}
+            </span>
+          </div>
+          <h3>{{ livro.titulo }}</h3>
+          <p class="author">{{ livro.autor }}</p>
+          <dl class="book-meta">
+            <div>
+              <dt class="price-label">Preço</dt>
+              <dd class="price">R$ {{ "%.2f"|format(livro.preco)|replace(".", ",") }}</dd>
+            </div>
+            <div>
+              <dt class="location-label">Localização</dt>
+              <dd class="location">Corredor {{ livro.corredor }} · Prateleira {{ livro.prateleira }}</dd>
+            </div>
+          </dl>
+          <div class="sale-actions">
+            <button class="sale-button" type="button" data-livro-id="{{ livro.id }}"
+                    aria-pressed="{{ 'true' if livro.status_disponibilidade == 'Vendido' else 'false' }}"
+                    aria-label="{{ 'Voltar ao estoque: ' if livro.status_disponibilidade == 'Vendido' else 'Marcar como vendido: ' }}{{ livro.titulo }}">
+              {{ "Voltar ao Estoque" if livro.status_disponibilidade == "Vendido" else "Marcar como Vendido" }}
+            </button>
+          </div>
+        </li>
+        {% else %}
+        <li class="empty-state">
+          <strong>Seu acervo está pronto para crescer.</strong>
+          Cadastre um exemplar no formulário acima para ele aparecer aqui.
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="panel" aria-labelledby="sugestao-title">
+      <div class="panel-heading">
+        <h2 id="sugestao-title">Sugira um livro para o sebo</h2>
+        <p>Conte à comunidade qual título você gostaria de encontrar por aqui.</p>
+      </div>
+      <div class="community-layout">
+        <figure class="community-photo">
+          <img src="/static/image%20copy.png" alt="Prateleiras do sebo com livros organizados para consulta da comunidade">
+          <figcaption>Um lugar para descobrir e compartilhar novas histórias.</figcaption>
+        </figure>
+        <form id="form-sugestao">
+          <div class="form-grid">
+            <div class="field">
+              <label for="sugestao-titulo">Título desejado</label>
+              <input id="sugestao-titulo" name="titulo_sugerido" type="text" maxlength="200" required
+                     placeholder="Ex.: A Ilha do Tesouro">
+            </div>
+            <div class="field">
+              <label for="sugestao-autor">Autor</label>
+              <input id="sugestao-autor" name="autor_sugerido" type="text" maxlength="200" required
+                     placeholder="Ex.: Robert Louis Stevenson">
+            </div>
+            <div class="field field-wide">
+              <label for="sugestao-observacao">Observação (opcional)</label>
+              <textarea id="sugestao-observacao" name="observacao" maxlength="2000"
+                        placeholder="Conte algo que ajude a identificar a edição desejada..."
+                        aria-describedby="sugestao-observacao-ajuda"></textarea>
+              <p class="field-hint" id="sugestao-observacao-ajuda">Se quiser, conte por que gostaria de ler ou encontrar esse título.</p>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="primary-button" type="submit">Enviar sugestão</button>
+          </div>
+          <p id="sugestao-feedback" class="form-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="gestao-sugestoes-title">
+      <div class="panel-heading">
+        <h2 id="gestao-sugestoes-title">Sugestões da comunidade</h2>
+        <p>Acompanhe os pedidos e decida se entram no catálogo ou ficam na lista de espera.</p>
+      </div>
+      <ul id="lista-sugestoes" class="suggestions" aria-label="Sugestões recebidas" aria-busy="false">
+        {% for sugestao in sugestoes %}
+        <li class="suggestion-card" data-sugestao-id="{{ sugestao.id }}">
+          <p class="suggestion-status">Status: {{ sugestao.status_sugestao }}</p>
+          <h3>{{ sugestao.titulo_sugerido }}</h3>
+          <p>Autor: {{ sugestao.autor_sugerido }}</p>
+          {% if sugestao.observacao %}<p>{{ sugestao.observacao }}</p>{% endif %}
+          {% if sugestao.status_sugestao != "Adicionado ao Catálogo" %}
+          <div class="suggestion-actions">
+            <button class="suggestion-add-toggle" type="button" aria-expanded="false"
+                    aria-controls="dados-catalogo-{{ sugestao.id }}">Adicionar ao Catálogo</button>
+            <button class="suggestion-keep secondary-action" type="button">Manter na Lista de Espera</button>
+          </div>
+          <form id="dados-catalogo-{{ sugestao.id }}" class="suggestion-catalog-form" data-sugestao-id="{{ sugestao.id }}" hidden>
+            <div class="form-grid">
+              <div class="field">
+                <label for="preco-sugestao-{{ sugestao.id }}">Preço (R$)</label>
+                <input id="preco-sugestao-{{ sugestao.id }}" name="preco" type="number" min="0" step="0.01"
+                       inputmode="decimal" placeholder="Ex.: 25,90" required>
+              </div>
+              <div class="field">
+                <label for="corredor-sugestao-{{ sugestao.id }}">Corredor</label>
+                <input id="corredor-sugestao-{{ sugestao.id }}" name="corredor" type="text"
+                       placeholder="Ex.: A" required>
+              </div>
+              <div class="field">
+                <label for="prateleira-sugestao-{{ sugestao.id }}">Prateleira</label>
+                <input id="prateleira-sugestao-{{ sugestao.id }}" name="prateleira" type="text"
+                       placeholder="Ex.: 2" required>
+              </div>
+            </div>
+            <button type="submit">Confirmar inclusão no catálogo</button>
+            <p class="form-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+          </form>
+          {% endif %}
+        </li>
+        {% else %}
+        <li class="suggestion-empty">Nenhuma sugestão recebida até agora.</li>
+        {% endfor %}
+      </ul>
+    </section>
+    <p class="footer-note">Sebo Vira Página · Histórias sempre encontram um novo caminho.</p>
+  </main>
+
+  <script>
+    const busca = document.querySelector("#busca");
+    const limparBusca = document.querySelector("#limpar-busca");
+    const lista = document.querySelector("#lista-livros");
+    const statusBusca = document.querySelector("#status-busca");
+    const bookCount = document.querySelector("#book-count");
+    const bookCountLabel = document.querySelector("#book-count-label");
+    const formLivro = document.querySelector("#form-livro");
+    const feedbackLivro = document.querySelector("#livro-feedback");
+    const formSugestao = document.querySelector("#form-sugestao");
+    const feedbackSugestao = document.querySelector("#sugestao-feedback");
+    const listaSugestoes = document.querySelector("#lista-sugestoes");
+    let temporizador;
+    let requisicao;
+
+    function criarEstadoVazio(mensagem, detalhe = "") {
+      const item = document.createElement("li");
+      item.className = "empty-state";
+      const titulo = document.createElement("strong");
+      titulo.textContent = mensagem;
+      item.append(titulo);
+      if (detalhe) item.append(document.createTextNode(detalhe));
+      return item;
+    }
+
+    function criarCartao(livro) {
+      const item = document.createElement("li");
+      const disponivel = livro.status_disponibilidade === "Disponível";
+      item.className = `book-card ${disponivel ? "" : "sold"}`;
+
+      const topo = document.createElement("div");
+      topo.className = "book-topline";
+      const categoria = document.createElement("span");
+      categoria.className = "book-category";
+      categoria.textContent = "Livro";
+      const disponibilidade = document.createElement("span");
+      disponibilidade.className = `availability ${disponivel ? "available" : "unavailable"}`;
+      disponibilidade.textContent = livro.status_disponibilidade;
+      topo.append(categoria, disponibilidade);
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = livro.titulo;
+      const autor = document.createElement("p");
+      autor.className = "author";
+      autor.textContent = livro.autor;
+
+      const metadados = document.createElement("dl");
+      metadados.className = "book-meta";
+      const precoBloco = document.createElement("div");
+      const precoLabel = document.createElement("dt");
+      precoLabel.className = "price-label";
+      precoLabel.textContent = "Preço";
+      const preco = document.createElement("dd");
+      preco.className = "price";
+      preco.textContent = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      }).format(livro.preco);
+      precoBloco.append(precoLabel, preco);
+
+      const localBloco = document.createElement("div");
+      const localLabel = document.createElement("dt");
+      localLabel.className = "location-label";
+      localLabel.textContent = "Localização";
+      const local = document.createElement("dd");
+      local.className = "location";
+      local.textContent = `Corredor ${livro.corredor} · Prateleira ${livro.prateleira}`;
+      localBloco.append(localLabel, local);
+
+      metadados.append(precoBloco, localBloco);
+      item.append(topo, titulo, autor, metadados);
+      const acoes = document.createElement("div");
+      acoes.className = "sale-actions";
+      const botaoStatus = document.createElement("button");
+      botaoStatus.className = "sale-button";
+      botaoStatus.type = "button";
+      botaoStatus.dataset.livroId = livro.id;
+      botaoStatus.setAttribute("aria-pressed", String(!disponivel));
+      botaoStatus.setAttribute(
+        "aria-label",
+        `${disponivel ? "Marcar como vendido" : "Voltar ao estoque"}: ${livro.titulo}`
+      );
+      botaoStatus.textContent = disponivel ? "Marcar como Vendido" : "Voltar ao Estoque";
+      acoes.append(botaoStatus);
+      item.append(acoes);
+      return item;
+    }
+
+    function criarCartaoSugestao(sugestao) {
+      const item = document.createElement("li");
+      item.className = "suggestion-card";
+      item.dataset.sugestaoId = sugestao.id;
+
+      const status = document.createElement("p");
+      status.className = `suggestion-status ${sugestao.status_sugestao === "Adicionado ao Catálogo" ? "added" : ""}`;
+      status.textContent = `Status: ${sugestao.status_sugestao}`;
+      const titulo = document.createElement("h3");
+      titulo.textContent = sugestao.titulo_sugerido;
+      const autor = document.createElement("p");
+      autor.textContent = `Autor: ${sugestao.autor_sugerido}`;
+      item.append(status, titulo, autor);
+
+      if (sugestao.observacao) {
+        const observacao = document.createElement("p");
+        observacao.textContent = sugestao.observacao;
+        item.append(observacao);
+      }
+
+      if (sugestao.status_sugestao !== "Adicionado ao Catálogo") {
+        const acoes = document.createElement("div");
+        acoes.className = "suggestion-actions";
+        const adicionar = document.createElement("button");
+        adicionar.className = "suggestion-add-toggle";
+        adicionar.type = "button";
+        adicionar.setAttribute("aria-expanded", "false");
+        adicionar.textContent = "Adicionar ao Catálogo";
+        const manter = document.createElement("button");
+        manter.className = "suggestion-keep secondary-action";
+        manter.type = "button";
+        manter.textContent = "Manter na Lista de Espera";
+        acoes.append(adicionar, manter);
+        item.append(acoes, criarFormularioCatalogo(sugestao.id));
+      }
+      return item;
+    }
+
+    function criarFormularioCatalogo(sugestaoId) {
+      const formulario = document.createElement("form");
+      formulario.className = "suggestion-catalog-form";
+      formulario.dataset.sugestaoId = sugestaoId;
+      formulario.id = `dados-catalogo-${sugestaoId}`;
+
+      const grade = document.createElement("div");
+      grade.className = "form-grid";
+      [
+        { name: "preco", label: "Preço (R$)", type: "number", placeholder: "Ex.: 25,90", min: "0", step: "0.01", inputmode: "decimal" },
+        { name: "corredor", label: "Corredor", type: "text", placeholder: "Ex.: A" },
+        { name: "prateleira", label: "Prateleira", type: "text", placeholder: "Ex.: 2" }
+      ].forEach(campo => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "field";
+        const id = `${campo.name}-sugestao-${sugestaoId}`;
+        const label = document.createElement("label");
+        label.htmlFor = id;
+        label.textContent = campo.label;
+        const input = document.createElement("input");
+        input.id = id;
+        input.name = campo.name;
+        input.type = campo.type;
+        input.placeholder = campo.placeholder;
+        input.required = true;
+        if (campo.min) input.min = campo.min;
+        if (campo.step) input.step = campo.step;
+        if (campo.inputmode) input.inputMode = campo.inputmode;
+        wrapper.append(label, input);
+        grade.append(wrapper);
+      });
+
+      const submit = document.createElement("button");
+      submit.type = "submit";
+      submit.textContent = "Confirmar inclusão no catálogo";
+      const feedback = document.createElement("p");
+      feedback.className = "form-feedback";
+      feedback.setAttribute("role", "status");
+      feedback.setAttribute("aria-live", "polite");
+      feedback.setAttribute("aria-atomic", "true");
+      formulario.append(grade, submit, feedback);
+      return formulario;
+    }
+
+    function definirFeedback(elemento, mensagem, erro = false) {
+      elemento.textContent = mensagem;
+      elemento.classList.toggle("error", erro);
+    }
+
+    async function lerErro(resposta, mensagemPadrao) {
+      const corpo = await resposta.json().catch(() => ({}));
+      if (typeof corpo.detail === "string") return corpo.detail;
+      if (Array.isArray(corpo.detail)) {
+        return corpo.detail.map(item => item.msg).filter(Boolean).join(" ");
+      }
+      return mensagemPadrao;
+    }
+
+    async function alternarStatus(botao) {
+      botao.disabled = true;
+      const idLivro = botao.dataset.livroId;
+      try {
+        const resposta = await fetch(`/livros/${idLivro}/toggle-status`, { method: "PATCH" });
+        if (!resposta.ok) {
+          throw new Error(await lerErro(resposta, "Não foi possível atualizar o status."));
+        }
+        const livro = await resposta.json();
+        const cartao = botao.closest(".book-card");
+        const disponibilidade = cartao.querySelector(".availability");
+        const disponivel = livro.status_disponibilidade === "Disponível";
+        disponibilidade.className = `availability ${disponivel ? "available" : "unavailable"}`;
+        disponibilidade.textContent = livro.status_disponibilidade;
+        cartao.classList.toggle("sold", !disponivel);
+        botao.textContent = disponivel ? "Marcar como Vendido" : "Voltar ao Estoque";
+        botao.setAttribute("aria-pressed", String(!disponivel));
+        botao.setAttribute(
+          "aria-label",
+          `${disponivel ? "Marcar como vendido" : "Voltar ao estoque"}: ${livro.titulo}`
+        );
+        statusBusca.textContent = `${livro.titulo}: status atualizado para ${livro.status_disponibilidade}.`;
+      } catch (erro) {
+        statusBusca.textContent = erro.message;
+      } finally {
+        botao.disabled = false;
+      }
+    }
+
+    async function carregarSugestoes() {
+      listaSugestoes.setAttribute("aria-busy", "true");
+      try {
+        const resposta = await fetch("/sugestoes/");
+        if (!resposta.ok) throw new Error("Não foi possível carregar as sugestões.");
+        const sugestoes = await resposta.json();
+        listaSugestoes.replaceChildren(
+          ...(sugestoes.length
+            ? sugestoes.map(criarCartaoSugestao)
+            : [Object.assign(document.createElement("li"), {
+                className: "suggestion-empty",
+                textContent: "Nenhuma sugestão recebida até agora."
+              })])
+        );
+      } catch (erro) {
+        listaSugestoes.replaceChildren(
+          Object.assign(document.createElement("li"), {
+            className: "suggestion-empty",
+            textContent: erro.message
+          })
+        );
+      } finally {
+        listaSugestoes.setAttribute("aria-busy", "false");
+      }
+    }
+
+    async function manterSugestaoNaLista(botao) {
+      const cartao = botao.closest(".suggestion-card");
+      botao.disabled = true;
+      try {
+        const resposta = await fetch(`/sugestoes/${cartao.dataset.sugestaoId}/status`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status_sugestao: "Mantido na Lista" })
+        });
+        if (!resposta.ok) throw new Error(await lerErro(resposta, "Não foi possível atualizar a sugestão."));
+        const sugestao = await resposta.json();
+        cartao.querySelector(".suggestion-status").textContent = `Status: ${sugestao.status_sugestao}`;
+        botao.remove();
+      } catch (erro) {
+        botao.disabled = false;
+        cartao.querySelector(".suggestion-status").textContent = erro.message;
+      }
+    }
+
+    async function adicionarSugestaoAoCatalogo(formulario) {
+      const dados = new FormData(formulario);
+      const payload = {
+        preco: Number(dados.get("preco")),
+        corredor: dados.get("corredor").trim(),
+        prateleira: dados.get("prateleira").trim()
+      };
+      const botao = formulario.querySelector('button[type="submit"]');
+      const cartao = formulario.closest(".suggestion-card");
+      botao.disabled = true;
+      definirFeedback(formulario.querySelector(".form-feedback"), "Adicionando ao catálogo...");
+      try {
+        const resposta = await fetch(
+          `/sugestoes/${formulario.dataset.sugestaoId}/adicionar-ao-catalogo`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          }
+        );
+        if (!resposta.ok) {
+          throw new Error(await lerErro(resposta, "Não foi possível adicionar ao catálogo."));
+        }
+        const livro = await resposta.json();
+        const status = cartao.querySelector(".suggestion-status");
+        status.textContent = "Status: Adicionado ao Catálogo";
+        status.classList.add("added");
+        cartao.querySelector(".suggestion-actions").remove();
+        formulario.remove();
+        await carregarLivros(busca.value.trim());
+        statusBusca.textContent = `“${livro.titulo}” foi adicionado ao catálogo.`;
+      } catch (erro) {
+        definirFeedback(formulario.querySelector(".form-feedback"), erro.message, true);
+        botao.disabled = false;
+      }
+    }
+
+    async function carregarLivros(termo = "") {
+      if (requisicao) requisicao.abort();
+      requisicao = new AbortController();
+      const url = termo
+        ? `/api/livros/busca?q=${encodeURIComponent(termo)}`
+        : "/livros/";
+      lista.setAttribute("aria-busy", "true");
+      statusBusca.textContent = termo ? "Buscando no acervo..." : "Carregando acervo...";
+
+      try {
+        const resposta = await fetch(url, { signal: requisicao.signal });
+        if (!resposta.ok) throw new Error("Não foi possível carregar os livros. Tente novamente.");
+        const livros = await resposta.json();
+        lista.replaceChildren(
+          ...(livros.length
+            ? livros.map(criarCartao)
+            : [criarEstadoVazio(
+                termo ? "Nenhum livro encontrado." : "Seu acervo está pronto para crescer.",
+                termo ? " Tente buscar por outro título ou autor." : " Cadastre um exemplar no formulário acima para ele aparecer aqui."
+              )])
+        );
+        lista.setAttribute("aria-busy", "false");
+        bookCount.textContent = livros.length;
+        bookCountLabel.textContent = termo ? "resultado(s)" : "livro(s) no acervo";
+        statusBusca.textContent = termo
+          ? `${livros.length} livro(s) encontrado(s) para “${termo}”.`
+          : `${livros.length} livro(s) no acervo.`;
+      } catch (erro) {
+        if (erro.name === "AbortError") return;
+        lista.replaceChildren(criarEstadoVazio("Não foi possível carregar o acervo.", " Verifique sua conexão e tente novamente."));
+        lista.setAttribute("aria-busy", "false");
+        statusBusca.textContent = erro.message;
+      }
+    }
+
+    busca.addEventListener("input", () => {
+      clearTimeout(temporizador);
+      const termo = busca.value.trim();
+      limparBusca.hidden = termo.length === 0;
+      temporizador = setTimeout(() => carregarLivros(termo), 250);
+    });
+
+    limparBusca.addEventListener("click", () => {
+      busca.value = "";
+      limparBusca.hidden = true;
+      carregarLivros();
+      busca.focus();
+    });
+
+    lista.addEventListener("click", event => {
+      const botaoStatus = event.target.closest(".sale-button");
+      if (botaoStatus) alternarStatus(botaoStatus);
+    });
+
+    listaSugestoes.addEventListener("click", event => {
+      const botaoAdicionar = event.target.closest(".suggestion-add-toggle");
+      if (botaoAdicionar) {
+        const formulario = botaoAdicionar.closest(".suggestion-card").querySelector(".suggestion-catalog-form");
+        const expandido = botaoAdicionar.getAttribute("aria-expanded") === "true";
+        formulario.hidden = expandido;
+        botaoAdicionar.setAttribute("aria-expanded", String(!expandido));
+        if (!expandido) formulario.querySelector("input").focus();
+        return;
+      }
+      const botaoManter = event.target.closest(".suggestion-keep");
+      if (botaoManter) manterSugestaoNaLista(botaoManter);
+    });
+
+    listaSugestoes.addEventListener("submit", event => {
+      if (!event.target.matches(".suggestion-catalog-form")) return;
+      event.preventDefault();
+      adicionarSugestaoAoCatalogo(event.target);
+    });
+
+    formLivro.addEventListener("submit", async event => {
+      event.preventDefault();
+      const botao = formLivro.querySelector('button[type="submit"]');
+      const dados = new FormData(formLivro);
+      const payload = {
+        titulo: dados.get("titulo").trim(),
+        autor: dados.get("autor").trim(),
+        preco: Number(dados.get("preco")),
+        corredor: dados.get("corredor").trim(),
+        prateleira: dados.get("prateleira").trim()
+      };
+      botao.disabled = true;
+      definirFeedback(feedbackLivro, "Cadastrando livro...");
+      try {
+        const resposta = await fetch("/livros/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!resposta.ok) {
+          throw new Error(await lerErro(resposta, "Não foi possível cadastrar o livro."));
+        }
+        const livro = await resposta.json();
+        formLivro.reset();
+        definirFeedback(feedbackLivro, `Livro “${livro.titulo}” cadastrado com sucesso.`);
+        busca.value = "";
+        limparBusca.hidden = true;
+        await carregarLivros();
+      } catch (erro) {
+        definirFeedback(feedbackLivro, erro.message, true);
+      } finally {
+        botao.disabled = false;
+      }
+    });
+
+    formSugestao.addEventListener("submit", async event => {
+      event.preventDefault();
+      const botao = formSugestao.querySelector('button[type="submit"]');
+      const dados = new FormData(formSugestao);
+      const payload = {
+        titulo_sugerido: dados.get("titulo_sugerido").trim(),
+        autor_sugerido: dados.get("autor_sugerido").trim(),
+        observacao: dados.get("observacao").trim() || null
+      };
+      botao.disabled = true;
+      definirFeedback(feedbackSugestao, "Enviando sugestão...");
+      try {
+        const resposta = await fetch("/sugestoes/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!resposta.ok) {
+          throw new Error(await lerErro(resposta, "Não foi possível enviar a sugestão."));
+        }
+        const sugestao = await resposta.json();
+        formSugestao.reset();
+        definirFeedback(
+          feedbackSugestao,
+          `Sugestão de “${sugestao.titulo_sugerido}” enviada. Obrigado por participar!`
+        );
+        await carregarSugestoes();
+      } catch (erro) {
+        definirFeedback(feedbackSugestao, erro.message, true);
+      } finally {
+        botao.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
