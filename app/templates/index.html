@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Consulte o acervo do Sebo Vira Página.">
+  <title>Acervo | Vira Página</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #24231f;
+      background: #f7f5ef;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { width: min(100% - 2rem, 960px); margin: 0 auto; padding: 3rem 0; }
+    h1 { margin: 0 0 .5rem; color: #315b43; }
+    .intro { margin: 0 0 2rem; color: #55534d; }
+    label { display: block; margin-bottom: .5rem; font-weight: 650; }
+    input {
+      width: 100%; min-height: 48px; padding: .75rem 1rem;
+      border: 2px solid #77746b; border-radius: .5rem; font: inherit;
+    }
+    input:focus { outline: 3px solid #e1a94b; outline-offset: 2px; }
+    .results { margin: 1rem 0; color: #55534d; }
+    .books {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+      gap: 1rem; padding: 0; list-style: none;
+    }
+    .card { height: 100%; padding: 1.25rem; background: #fff; border: 1px solid #d6d2c8; border-radius: .75rem; }
+    .card h2 { margin: 0 0 .5rem; font-size: 1.15rem; overflow-wrap: anywhere; }
+    .card p { margin: .35rem 0; }
+    .location { color: #315b43; font-weight: 650; }
+    @media (max-width: 480px) { main { padding-top: 2rem; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Acervo Vira Página</h1>
+      <p class="intro">Encontre um livro pelo título ou pelo nome do autor.</p>
+    </header>
+
+    <section aria-labelledby="busca-label">
+      <label id="busca-label" for="busca">Buscar no acervo</label>
+      <input id="busca" type="search" autocomplete="off"
+             placeholder="Ex.: O Pequeno Príncipe ou Antoine de Saint-Exupéry"
+             aria-controls="lista-livros">
+      <p id="status-busca" class="results" role="status" aria-live="polite">
+        {{ livros|length }} livro(s) no acervo.
+      </p>
+      <ul id="lista-livros" class="books" aria-label="Livros do acervo">
+        {% for livro in livros %}
+        <li class="card">
+          <h2>{{ livro.titulo }}</h2>
+          <p>Autor: {{ livro.autor }}</p>
+          <p>Preço: R$ {{ "%.2f"|format(livro.preco) }}</p>
+          <p>{{ livro.status_disponibilidade }}</p>
+          <p class="location">Localização: corredor {{ livro.corredor }}, prateleira {{ livro.prateleira }}</p>
+        </li>
+        {% else %}
+        <li class="card">Nenhum livro cadastrado ainda.</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+  <script>
+    const busca = document.querySelector("#busca");
+    const lista = document.querySelector("#lista-livros");
+    const status = document.querySelector("#status-busca");
+    let temporizador;
+
+    function criarCartao(livro) {
+      const item = document.createElement("li");
+      item.className = "card";
+      const titulo = document.createElement("h2");
+      titulo.textContent = livro.titulo;
+      item.append(titulo);
+      [
+        `Autor: ${livro.autor}`,
+        `Preço: R$ ${Number(livro.preco).toFixed(2)}`,
+        livro.status_disponibilidade,
+        `Localização: corredor ${livro.corredor}, prateleira ${livro.prateleira}`
+      ].forEach((texto, indice) => {
+        const paragrafo = document.createElement("p");
+        paragrafo.textContent = texto;
+        if (indice === 3) paragrafo.className = "location";
+        item.append(paragrafo);
+      });
+      return item;
+    }
+
+    busca.addEventListener("input", () => {
+      clearTimeout(temporizador);
+      temporizador = setTimeout(async () => {
+        const termo = busca.value.trim();
+        if (!termo) {
+          window.location.reload();
+          return;
+        }
+        status.textContent = "Buscando livros...";
+        try {
+          const resposta = await fetch(`/api/livros/busca?q=${encodeURIComponent(termo)}`);
+          if (!resposta.ok) throw new Error("Não foi possível buscar os livros.");
+          const livros = await resposta.json();
+          lista.replaceChildren(...livros.map(criarCartao));
+          status.textContent = `${livros.length} livro(s) encontrado(s).`;
+          if (livros.length === 0) {
+            const vazio = document.createElement("li");
+            vazio.className = "card";
+            vazio.textContent = "Nenhum livro encontrado.";
+            lista.append(vazio);
+          }
+        } catch (erro) {
+          status.textContent = erro.message;
+        }
+      }, 250);
+    });
+  </script>
+</body>
+</html>

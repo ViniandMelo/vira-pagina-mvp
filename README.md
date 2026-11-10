@@ -1,40 +1,105 @@
-# vira-pagina-mvp
-MVP do sistema de gestão de acervo e localização física para o Sebo Vira Página.
+# Sebo Vira Página — MVP de Gestão de Acervo
 
+Sistema de gestão e localização física de livros do sebo comunitário Vira Página, desenvolvido em Python com FastAPI, SQLModel, SQLite e Jinja2.
 
-# 📚 Sebo Vira Página — MVP de Gestão de Acervo
+## Requisitos
 
-Sistema de gestão e localização física de livros desenvolvido para otimizar o atendimento de balcão do sebo comunitário "Vira Página".
+- Python 3.12 ou superior
+- Terminal (PowerShell ou Git Bash)
 
-## 🛠️ Tecnologias Utilizadas
-- **Linguagem:** Python 3.12
-- **Framework Web / API:** FastAPI
-- **Validação de Dados:** Pydantic
-- **Banco de Dados:** SQLite (Embarcado/Local)
-- **Autenticação e Segurança:** Hash Argon2 / Passlib (diretrizes OWASP Top 10)
-- **Acessibilidade:** WCAG 2.1 AA (contraste 4.5:1, áreas de toque >= 44px)
+## Instalação e execução no Windows
 
-## 📌 Requisitos Principais Atendidos
-- **RF01:** Cadastro de novos livros e localização física (Corredor/Prateleira).
-- **RF02:** Consulta rápida por título ou autor com resposta sob pressão de tempo.
-- **RF03:** Atualização do status do exemplar para "Vendido".
-- **RNF01:** Autenticação segura de operador sem senhas em texto limpo.
-- **RNF03:** Desempenho de carregamento e busca em menos de 2,5s.
+Abra um terminal na pasta do projeto. Se ainda não clonou o repositório:
 
-## 🚀 Como Executar o Projeto
 ```bash
-# Clonar o repositório
 git clone https://github.com/ViniandMelo/vira-pagina-mvp.git
-
-# Entrar no diretório
 cd vira-pagina-mvp
+```
 
-# Criar e ativar ambiente virtual
-python -m venv .venv
-source .venv/bin/activate  # No Windows: .venv\Scripts\activate
+Crie o ambiente virtual e instale as dependências. Use os comandos correspondentes ao terminal aberto.
 
-# Instalar dependências
-pip install -r requirements.txt
+### PowerShell
 
-# Executar o servidor FastAPI
-uvicorn app.main:app --reload
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+```
+
+Se o PowerShell bloquear a ativação do ambiente, execute `python -m pip install -r requirements.txt` usando diretamente o Python do ambiente:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+### Git Bash
+
+```bash
+py -m venv .venv
+source .venv/Scripts/activate
+python -m pip install -r requirements.txt
+```
+
+Inicie o servidor (funciona nos dois terminais):
+
+```bash
+python -m uvicorn app.main:app --reload
+```
+
+Mantenha esse terminal aberto enquanto testa o sistema. Na inicialização, o SQLite cria automaticamente o arquivo `vira_pagina.db` na pasta do projeto.
+
+## Testar no navegador
+
+- Interface do acervo: http://127.0.0.1:8000/
+- Documentação interativa Swagger: http://127.0.0.1:8000/docs
+
+No Swagger, abra `POST /livros/`, clique em **Try it out**, envie o JSON de exemplo abaixo e clique em **Execute**. Uma resposta `201` indica que o livro foi cadastrado.
+
+```json
+{
+  "titulo": "O Pequeno Príncipe",
+  "autor": "Antoine de Saint-Exupéry",
+  "preco": 25.9,
+  "status_disponibilidade": "Disponível",
+  "corredor": "A",
+  "prateleira": "2"
+}
+```
+
+Em seguida, abra `GET /api/livros/busca`, informe `q=Pequeno` e clique em **Execute** para conferir o resultado da busca.
+
+## Testar o cadastro no Postman
+
+Você pode importar o cURL abaixo no Postman:
+
+1. Abra **Import**.
+2. Selecione **Raw text**.
+3. Cole o comando e clique em **Continue** e **Import**.
+4. Abra a requisição importada e clique em **Send**.
+
+```bash
+curl --location --request POST 'http://127.0.0.1:8000/livros/' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "titulo": "O Pequeno Príncipe",
+    "autor": "Antoine de Saint-Exupéry",
+    "preco": 25.9,
+    "status_disponibilidade": "Disponível",
+    "corredor": "A",
+    "prateleira": "2"
+  }'
+```
+
+O esperado é receber `201 Created` e um JSON contendo também o `id` gerado. Para buscar o livro no Postman, crie uma requisição **GET** para:
+
+```text
+http://127.0.0.1:8000/api/livros/busca?q=Pequeno
+```
+
+## Rotas disponíveis
+
+| Método | Caminho | Descrição |
+|---|---|---|
+| GET | `/` | Interface web e listagem do acervo |
+| POST | `/livros/` | Cadastra um livro |
+| GET | `/api/livros/busca?q={termo}` | Busca por título ou autor |
