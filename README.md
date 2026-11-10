@@ -2,18 +2,6 @@
 
 Aplicação web para cadastrar e localizar livros de um sebo comunitário, acompanhar vendas e organizar sugestões da comunidade. O MVP foi desenvolvido com Python, FastAPI, SQLModel, SQLite e Jinja2.
 
-<p align="center">
-  <img src="app/static/image.png" alt="Interior de um sebo com estantes de livros" width="640">
-</p>
-
-<p align="center">
-  <em>Um espaço para encontrar e compartilhar novas histórias.</em>
-</p>
-
-<p align="center">
-  <img src="app/static/image%20copy.png" alt="Estantes de livros organizadas no sebo" width="420">
-</p>
-
 > **Status da entrega:** MVP funcional para o escopo atual. Inclui cadastro e busca de livros, alternância de disponibilidade, gestão de sugestões, interface responsiva com recursos de acessibilidade e testes automatizados. A integração contínua executa os testes com Python 3.12 em pushes e pull requests para `main` e `master`.
 
 ## Requisitos no computador
@@ -244,3 +232,35 @@ python -m pytest --cov=app --cov-report=term-missing
 ```
 
 O workflow do GitHub Actions repete a execução de `python -m pytest -v` automaticamente em pushes e pull requests para `main` e `master`.
+
+## 🖼️ Evidências de Funcionamento (Telas da Aplicação)
+
+<p align="center">
+  <img src="app/static/readme/image%20copy.png" alt="Tela inicial do sistema e formulário de cadastro de livros" width="450">
+  <br>
+  <em>Página inicial e cadastro de exemplares.</em>
+</p>
+
+<p align="center">
+  <img src="app/static/readme/image%20copy%202.png" alt="Formulário de cadastro e início da consulta do acervo" width="450">
+  <br>
+  <em>Cadastro e consulta do acervo.</em>
+</p>
+
+<p align="center">
+  <img src="app/static/readme/image%20copy%203.png" alt="Resultados do acervo com status, preço, localização e ações" width="450">
+  <br>
+  <em>Busca, localização e alternância de disponibilidade.</em>
+</p>
+
+<p align="center">
+  <img src="app/static/readme/image%20copy%204.png" alt="Formulário da comunidade para sugerir livros" width="450">
+  <br>
+  <em>Envio de sugestões pela comunidade.</em>
+</p>
+
+<p align="center">
+  <img src="app/static/readme/image%20copy%205.png" alt="Painel de moderação de sugestões da comunidade" width="450">
+  <br>
+  <em>Painel de acompanhamento das sugestões.</em>
+</p>
